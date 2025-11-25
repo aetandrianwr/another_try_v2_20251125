@@ -14,7 +14,7 @@ class Config:
     num_users = 46  # max_user + 1
     
     # Embedding dimensions
-    loc_embed_dim = 32
+    loc_embed_dim = 40
     user_embed_dim = 12
     weekday_embed_dim = 8
     time_embed_dim = 12
@@ -24,15 +24,15 @@ class Config:
     nhead = 8
     num_layers = 2
     dim_feedforward = 256
-    dropout = 0.2
+    dropout = 0.1
     
     # Training parameters
-    batch_size = 128
-    learning_rate = 0.0005
-    weight_decay = 1e-4
-    max_epochs = 150
-    patience = 20
-    warmup_epochs = 5
+    batch_size = 64
+    learning_rate = 0.0008
+    weight_decay = 5e-5
+    max_epochs = 200
+    patience = 30
+    warmup_epochs = 10
     
     # Optimization
     gradient_clip = 1.0
