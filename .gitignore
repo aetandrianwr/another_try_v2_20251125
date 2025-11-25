@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Checkpoints and logs
+checkpoints/
+logs/
+*.pt
+*.pth
+
+# Data
+*.pk
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Results
+results/
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
