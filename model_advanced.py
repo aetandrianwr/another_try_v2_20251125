@@ -107,7 +107,7 @@ class AttentionPooling(nn.Module):
         # x: (batch, seq_len, d_model)
         # mask: (batch, seq_len)
         attn_weights = self.attention(x).squeeze(-1)  # (batch, seq_len)
-        attn_weights = attn_weights.masked_fill(~mask, float('-inf'))
+        attn_weights = attn_weights.masked_fill(mask.logical_not(), float('-inf'))
         attn_weights = F.softmax(attn_weights, dim=-1).unsqueeze(-1)  # (batch, seq_len, 1)
         pooled = (x * attn_weights).sum(dim=1)  # (batch, d_model)
         return pooled
@@ -203,7 +203,9 @@ class AdvancedNextLocationPredictor(nn.Module):
         freq = torch.FloatTensor(location_counts)
         freq = freq / freq.sum()
         bias = torch.log(freq + 1e-8)
-        self.output_proj.bias.data = bias
+        # Keep bias on the same device as the model
+        if self.output_proj.bias is not None:
+            self.output_proj.bias.data = bias.to(self.output_proj.bias.device)
     
     def forward(self, locations, users, weekdays, start_minutes, durations, time_diffs, mask):
         batch_size, seq_len = locations.shape
@@ -235,7 +237,7 @@ class AdvancedNextLocationPredictor(nn.Module):
         x = self.pos_encoder(x)
         
         # Create padding mask for transformer
-        padding_mask = ~mask
+        padding_mask = mask.logical_not()  # Use logical_not instead of ~
         
         # Apply transformer encoder layers
         for layer in self.encoder_layers:
@@ -256,7 +258,7 @@ class AdvancedNextLocationPredictor(nn.Module):
         
         # Add user-specific location preference (low-rank factorization)
         user_pref = self.user_pref_embed(users[:, 0])  # (batch, user_pref_dim)
-        loc_pref = self.loc_pref_embed.weight  # (num_locations, user_pref_dim)
+        loc_pref = self.loc_pref_embed.weight.to(user_pref.device)  # (num_locations, user_pref_dim)
         user_bias = torch.matmul(user_pref, loc_pref.t())  # (batch, num_locations)
         logits = logits + user_bias * 0.05  # Small scale to avoid overfitting
         
