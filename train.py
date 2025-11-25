@@ -129,10 +129,10 @@ class Trainer:
             "correct@3": all_stats[1],
             "correct@5": all_stats[2],
             "correct@10": all_stats[3],
-            "rr": all_stats[4],
-            "ndcg": all_stats[5],
-            "f1": 0,
-            "total": all_stats[6],
+            "rr": all_stats[5],
+            "ndcg": all_stats[6],
+            "f1": all_stats[4],
+            "total": all_stats[7],
         })
         
         return avg_loss, perf
@@ -171,10 +171,10 @@ class Trainer:
             "correct@3": all_stats[1],
             "correct@5": all_stats[2],
             "correct@10": all_stats[3],
-            "rr": all_stats[4],
-            "ndcg": all_stats[5],
-            "f1": 0,
-            "total": all_stats[6],
+            "rr": all_stats[5],
+            "ndcg": all_stats[6],
+            "f1": all_stats[4],
+            "total": all_stats[7],
         })
         
         return avg_loss, perf
@@ -277,8 +277,8 @@ class Trainer:
         
         # Save results
         results = {
-            'test_performance': test_perf,
-            'best_val_acc': self.best_val_acc,
+            'test_performance': {k: float(v) for k, v in test_perf.items()},
+            'best_val_acc': float(self.best_val_acc),
             'train_history': self.train_history,
             'val_history': self.val_history,
         }

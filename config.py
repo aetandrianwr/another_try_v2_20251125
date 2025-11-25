@@ -21,18 +21,18 @@ class Config:
     
     # Model architecture
     d_model = 128
-    nhead = 4
+    nhead = 8
     num_layers = 2
     dim_feedforward = 256
-    dropout = 0.15
+    dropout = 0.2
     
     # Training parameters
-    batch_size = 256
-    learning_rate = 0.001
-    weight_decay = 1e-5
-    max_epochs = 200
-    patience = 25
-    warmup_epochs = 10
+    batch_size = 128
+    learning_rate = 0.0005
+    weight_decay = 1e-4
+    max_epochs = 150
+    patience = 20
+    warmup_epochs = 5
     
     # Optimization
     gradient_clip = 1.0

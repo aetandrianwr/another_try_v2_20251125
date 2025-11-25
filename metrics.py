@@ -46,7 +46,7 @@ def calculate_correct_total_prediction(logits, true_y):
         # top_k = np.sum([curr_y in pred for pred, curr_y in zip(prediction, true_y)])
         result_ls.append(top_k)
     # f1 score
-    # result_ls.append(f1)
+    result_ls.append(0)  # placeholder for f1
     # rr
     result_ls.append(get_mrr(logits, true_y))
     # ndcg
